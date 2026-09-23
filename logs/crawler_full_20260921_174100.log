@@ -1,0 +1,2395 @@
+============================================================
+TIKI DATA INGESTION PIPELINE
+============================================================
+Started at: 2026-09-21 17:41:00
+Host: eUbuntu
+User: eve
+Project: /home/eve/Desktop/project2/tiki_crawl
+Python: Python 3.10.12
+Test limit: full
+Log file: crawler_full_20260921_174100.log
+============================================================
+
+========================================
+TIKI PRODUCTION CRAWLER
+========================================
+IDs: 200000
+Worker endpoints: 5
+Threads: 5
+Starting global interval: 1.0s
+Minimum global interval: 0.95s
+Database: state/crawler.db
+========================================
+Previous runtime: 52:41:58
+Session number: 2
+First started at: 2026-09-19T15:20:07
+Restored interval: 0.95s
+First-pass pending: 9600
+
+Chunk 1/96
+success=77 | permanent=23 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.366s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.932s min | 0.963s max
+chunk_runtime=00:01:34 | chunk_rate=63.50 IDs/min
+
+========================================
+FIRST PASS
+Processed: 190500/200000
+Success: 117453
+Permanent: 72255
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:01:36
+Total runtime: 52:43:35
+Session rate: 62.42 IDs/min
+ETA: 02:32:11
+========================================
+
+Chunk 2/96
+success=71 | permanent=29 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.343s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.936s min | 0.966s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 190600/200000
+Success: 117524
+Permanent: 72284
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:03:11
+Total runtime: 52:45:10
+Session rate: 62.79 IDs/min
+ETA: 02:29:41
+========================================
+
+Chunk 3/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.320s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.944s min | 0.956s max
+chunk_runtime=00:01:34 | chunk_rate=63.16 IDs/min
+
+========================================
+FIRST PASS
+Processed: 190700/200000
+Success: 117607
+Permanent: 72301
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:04:46
+Total runtime: 52:46:45
+Session rate: 62.91 IDs/min
+ETA: 02:27:49
+========================================
+
+Chunk 4/96
+success=78 | permanent=22 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.324s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.957s max
+chunk_runtime=00:01:35 | chunk_rate=63.10 IDs/min
+
+========================================
+FIRST PASS
+Processed: 190800/200000
+Success: 117685
+Permanent: 72323
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:06:21
+Total runtime: 52:48:20
+Session rate: 62.96 IDs/min
+ETA: 02:26:07
+========================================
+
+Chunk 5/96
+success=75 | permanent=25 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.336s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.960s max
+chunk_runtime=00:01:34 | chunk_rate=63.23 IDs/min
+
+========================================
+FIRST PASS
+Processed: 190900/200000
+Success: 117760
+Permanent: 72348
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:07:56
+Total runtime: 52:49:55
+Session rate: 63.01 IDs/min
+ETA: 02:24:25
+========================================
+
+Chunk 6/96
+success=77 | permanent=23 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.304s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.944s min | 0.955s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191000/200000
+Success: 117837
+Permanent: 72371
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:09:31
+Total runtime: 52:51:30
+Session rate: 63.03 IDs/min
+ETA: 02:22:47
+========================================
+
+Chunk 7/96
+success=66 | permanent=34 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.309s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.956s max
+chunk_runtime=00:01:34 | chunk_rate=63.28 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191100/200000
+Success: 117903
+Permanent: 72405
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:11:06
+Total runtime: 52:53:04
+Session rate: 63.06 IDs/min
+ETA: 02:21:07
+========================================
+
+Chunk 8/96
+success=68 | permanent=32 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.310s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.960s max
+chunk_runtime=00:01:34 | chunk_rate=63.20 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191200/200000
+Success: 117971
+Permanent: 72437
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:12:40
+Total runtime: 52:54:39
+Session rate: 63.08 IDs/min
+ETA: 02:19:30
+========================================
+
+Chunk 9/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.328s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.939s min | 0.961s max
+chunk_runtime=00:01:35 | chunk_rate=63.15 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191300/200000
+Success: 118043
+Permanent: 72465
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:14:15
+Total runtime: 52:56:14
+Session rate: 63.09 IDs/min
+ETA: 02:17:54
+========================================
+
+Chunk 10/96
+success=67 | permanent=33 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.961s max
+chunk_runtime=00:01:35 | chunk_rate=63.15 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191400/200000
+Success: 118110
+Permanent: 72498
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:15:51
+Total runtime: 52:57:49
+Session rate: 63.09 IDs/min
+ETA: 02:16:18
+========================================
+
+Chunk 11/96
+success=62 | permanent=38 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.309s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191500/200000
+Success: 118172
+Permanent: 72536
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:17:25
+Total runtime: 52:59:24
+Session rate: 63.10 IDs/min
+ETA: 02:14:42
+========================================
+
+Chunk 12/96
+success=68 | permanent=32 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.310s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.944s min | 0.955s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191600/200000
+Success: 118240
+Permanent: 72568
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:19:01
+Total runtime: 53:01:00
+Session rate: 63.10 IDs/min
+ETA: 02:13:07
+========================================
+
+Chunk 13/96
+success=54 | permanent=46 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.306s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.926s min | 0.975s max
+chunk_runtime=00:01:34 | chunk_rate=63.17 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191700/200000
+Success: 118294
+Permanent: 72614
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:20:36
+Total runtime: 53:02:35
+Session rate: 63.10 IDs/min
+ETA: 02:11:31
+========================================
+
+Chunk 14/96
+success=60 | permanent=40 | temporary=0 | challenge=0
+http_requests=101 | fallbacks=1
+avg_latency=0.472s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.996s avg | 0.940s min | 5.519s max
+chunk_runtime=00:01:40 | chunk_rate=59.44 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191800/200000
+Success: 118354
+Permanent: 72654
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:22:17
+Total runtime: 53:04:15
+Session rate: 62.83 IDs/min
+ETA: 02:10:31
+========================================
+
+Chunk 15/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.957s max
+chunk_runtime=00:01:34 | chunk_rate=63.50 IDs/min
+
+========================================
+FIRST PASS
+Processed: 191900/200000
+Success: 118406
+Permanent: 72702
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:23:51
+Total runtime: 53:05:50
+Session rate: 62.87 IDs/min
+ETA: 02:08:50
+========================================
+
+Chunk 16/96
+success=61 | permanent=39 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.301s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.938s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192000/200000
+Success: 118467
+Permanent: 72741
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:25:26
+Total runtime: 53:07:25
+Session rate: 62.89 IDs/min
+ETA: 02:07:12
+========================================
+
+Chunk 17/96
+success=60 | permanent=40 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.329s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.16 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192100/200000
+Success: 118527
+Permanent: 72781
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:27:01
+Total runtime: 53:09:00
+Session rate: 62.90 IDs/min
+ETA: 02:05:35
+========================================
+
+Chunk 18/96
+success=61 | permanent=39 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.319s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.959s max
+chunk_runtime=00:01:35 | chunk_rate=63.13 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192200/200000
+Success: 118588
+Permanent: 72820
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:28:36
+Total runtime: 53:10:35
+Session rate: 62.92 IDs/min
+ETA: 02:03:58
+========================================
+
+Chunk 19/96
+success=61 | permanent=39 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.316s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.939s min | 0.961s max
+chunk_runtime=00:01:34 | chunk_rate=63.16 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192300/200000
+Success: 118649
+Permanent: 72859
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:30:11
+Total runtime: 53:12:10
+Session rate: 62.93 IDs/min
+ETA: 02:02:21
+========================================
+
+Chunk 20/96
+success=62 | permanent=38 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.307s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.935s min | 0.963s max
+chunk_runtime=00:01:34 | chunk_rate=63.21 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192400/200000
+Success: 118711
+Permanent: 72897
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:31:46
+Total runtime: 53:13:45
+Session rate: 62.94 IDs/min
+ETA: 02:00:44
+========================================
+
+Chunk 21/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.317s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.938s min | 0.963s max
+chunk_runtime=00:01:35 | chunk_rate=63.16 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192500/200000
+Success: 118783
+Permanent: 72925
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:33:21
+Total runtime: 53:15:20
+Session rate: 62.95 IDs/min
+ETA: 01:59:08
+========================================
+
+Chunk 22/96
+success=58 | permanent=42 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.315s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.959s max
+chunk_runtime=00:01:35 | chunk_rate=63.04 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192600/200000
+Success: 118841
+Permanent: 72967
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:34:56
+Total runtime: 53:16:55
+Session rate: 62.96 IDs/min
+ETA: 01:57:32
+========================================
+
+Chunk 23/96
+success=84 | permanent=16 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.316s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.956s max
+chunk_runtime=00:01:34 | chunk_rate=63.30 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192700/200000
+Success: 118925
+Permanent: 72983
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:36:31
+Total runtime: 53:18:30
+Session rate: 62.97 IDs/min
+ETA: 01:55:55
+========================================
+
+Chunk 24/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.938s min | 0.962s max
+chunk_runtime=00:01:35 | chunk_rate=63.14 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192800/200000
+Success: 119008
+Permanent: 73000
+Temporary: 792
+Global interval: 0.95s
+Session runtime: 00:38:06
+Total runtime: 53:20:05
+Session rate: 62.98 IDs/min
+ETA: 01:54:19
+========================================
+
+Chunk 25/96
+success=73 | permanent=26 | temporary=1 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.314s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.959s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 192900/200000
+Success: 119081
+Permanent: 73026
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:39:41
+Total runtime: 53:21:40
+Session rate: 62.98 IDs/min
+ETA: 01:52:43
+========================================
+
+Chunk 26/96
+success=84 | permanent=16 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.309s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.958s max
+chunk_runtime=00:01:34 | chunk_rate=63.21 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193000/200000
+Success: 119165
+Permanent: 73042
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:41:16
+Total runtime: 53:23:15
+Session rate: 62.99 IDs/min
+ETA: 01:51:07
+========================================
+
+Chunk 27/96
+success=78 | permanent=22 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.331s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.937s min | 0.964s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193100/200000
+Success: 119243
+Permanent: 73064
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:42:51
+Total runtime: 53:24:50
+Session rate: 63.00 IDs/min
+ETA: 01:49:31
+========================================
+
+Chunk 28/96
+success=79 | permanent=21 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.366s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.962s max
+chunk_runtime=00:01:35 | chunk_rate=63.11 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193200/200000
+Success: 119322
+Permanent: 73085
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:44:26
+Total runtime: 53:26:25
+Session rate: 63.00 IDs/min
+ETA: 01:47:55
+========================================
+
+Chunk 29/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.309s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.946s min | 0.955s max
+chunk_runtime=00:01:34 | chunk_rate=63.23 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193300/200000
+Success: 119394
+Permanent: 73113
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:46:01
+Total runtime: 53:28:00
+Session rate: 63.01 IDs/min
+ETA: 01:46:19
+========================================
+
+Chunk 30/96
+success=79 | permanent=21 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.307s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.956s max
+chunk_runtime=00:01:35 | chunk_rate=63.15 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193400/200000
+Success: 119473
+Permanent: 73134
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:47:36
+Total runtime: 53:29:35
+Session rate: 63.01 IDs/min
+ETA: 01:44:44
+========================================
+
+Chunk 31/96
+success=65 | permanent=35 | temporary=0 | challenge=0
+http_requests=102 | fallbacks=2
+avg_latency=0.619s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.959s max
+chunk_runtime=00:01:36 | chunk_rate=61.89 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193500/200000
+Success: 119538
+Permanent: 73169
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:49:13
+Total runtime: 53:31:12
+Session rate: 62.98 IDs/min
+ETA: 01:43:12
+========================================
+
+Chunk 32/96
+success=71 | permanent=29 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.314s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.961s max
+chunk_runtime=00:01:34 | chunk_rate=63.20 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193600/200000
+Success: 119609
+Permanent: 73198
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:50:48
+Total runtime: 53:32:47
+Session rate: 62.98 IDs/min
+ETA: 01:41:36
+========================================
+
+Chunk 33/96
+success=65 | permanent=35 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.313s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.960s max
+chunk_runtime=00:01:34 | chunk_rate=63.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193700/200000
+Success: 119674
+Permanent: 73233
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:52:23
+Total runtime: 53:34:22
+Session rate: 62.99 IDs/min
+ETA: 01:40:01
+========================================
+
+Chunk 34/96
+success=84 | permanent=16 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.321s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.938s min | 0.962s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193800/200000
+Success: 119758
+Permanent: 73249
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:53:58
+Total runtime: 53:35:57
+Session rate: 62.99 IDs/min
+ETA: 01:38:25
+========================================
+
+Chunk 35/96
+success=71 | permanent=29 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.321s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.961s max
+chunk_runtime=00:01:35 | chunk_rate=62.77 IDs/min
+
+========================================
+FIRST PASS
+Processed: 193900/200000
+Success: 119829
+Permanent: 73278
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:55:34
+Total runtime: 53:37:33
+Session rate: 62.99 IDs/min
+ETA: 01:36:50
+========================================
+
+Chunk 36/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.365s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.938s min | 0.965s max
+chunk_runtime=00:01:34 | chunk_rate=63.61 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194000/200000
+Success: 119912
+Permanent: 73295
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:57:08
+Total runtime: 53:39:07
+Session rate: 63.00 IDs/min
+ETA: 01:35:13
+========================================
+
+Chunk 37/96
+success=75 | permanent=25 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.315s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.956s max
+chunk_runtime=00:01:35 | chunk_rate=63.10 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194100/200000
+Success: 119987
+Permanent: 73320
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 00:58:43
+Total runtime: 53:40:42
+Session rate: 63.01 IDs/min
+ETA: 01:33:38
+========================================
+
+Chunk 38/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.305s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.954s max
+chunk_runtime=00:01:34 | chunk_rate=63.21 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194200/200000
+Success: 120059
+Permanent: 73348
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:00:18
+Total runtime: 53:42:17
+Session rate: 63.01 IDs/min
+ETA: 01:32:02
+========================================
+
+Chunk 39/96
+success=63 | permanent=37 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.313s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.944s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.17 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194300/200000
+Success: 120122
+Permanent: 73385
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:01:53
+Total runtime: 53:43:52
+Session rate: 63.01 IDs/min
+ETA: 01:30:27
+========================================
+
+Chunk 40/96
+success=66 | permanent=34 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.959s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194400/200000
+Success: 120188
+Permanent: 73419
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:03:28
+Total runtime: 53:45:27
+Session rate: 63.02 IDs/min
+ETA: 01:28:51
+========================================
+
+Chunk 41/96
+success=63 | permanent=37 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.310s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.23 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194500/200000
+Success: 120251
+Permanent: 73456
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:05:03
+Total runtime: 53:47:02
+Session rate: 63.02 IDs/min
+ETA: 01:27:16
+========================================
+
+Chunk 42/96
+success=60 | permanent=40 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.311s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.960s max
+chunk_runtime=00:01:35 | chunk_rate=63.04 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194600/200000
+Success: 120311
+Permanent: 73496
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:06:38
+Total runtime: 53:48:37
+Session rate: 63.02 IDs/min
+ETA: 01:25:41
+========================================
+
+Chunk 43/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.300s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.954s max
+chunk_runtime=00:01:34 | chunk_rate=63.29 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194700/200000
+Success: 120363
+Permanent: 73544
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:08:13
+Total runtime: 53:50:12
+Session rate: 63.03 IDs/min
+ETA: 01:24:05
+========================================
+
+Chunk 44/96
+success=59 | permanent=41 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.301s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.959s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194800/200000
+Success: 120422
+Permanent: 73585
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:09:48
+Total runtime: 53:51:47
+Session rate: 63.03 IDs/min
+ETA: 01:22:30
+========================================
+
+Chunk 45/96
+success=49 | permanent=51 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.313s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.957s max
+chunk_runtime=00:01:34 | chunk_rate=63.20 IDs/min
+
+========================================
+FIRST PASS
+Processed: 194900/200000
+Success: 120471
+Permanent: 73636
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:11:23
+Total runtime: 53:53:22
+Session rate: 63.03 IDs/min
+ETA: 01:20:54
+========================================
+
+Chunk 46/96
+success=61 | permanent=39 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.292s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.956s max
+chunk_runtime=00:01:35 | chunk_rate=63.05 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195000/200000
+Success: 120532
+Permanent: 73675
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:12:58
+Total runtime: 53:54:57
+Session rate: 63.03 IDs/min
+ETA: 01:19:19
+========================================
+
+Chunk 47/96
+success=37 | permanent=63 | temporary=0 | challenge=0
+http_requests=101 | fallbacks=1
+avg_latency=0.482s | avg_processing=0.000s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.955s max
+chunk_runtime=00:01:35 | chunk_rate=62.67 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195100/200000
+Success: 120569
+Permanent: 73738
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:14:34
+Total runtime: 53:56:33
+Session rate: 63.03 IDs/min
+ETA: 01:17:44
+========================================
+
+Chunk 48/96
+success=58 | permanent=42 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.314s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.957s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195200/200000
+Success: 120627
+Permanent: 73780
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:16:09
+Total runtime: 53:58:08
+Session rate: 63.03 IDs/min
+ETA: 01:16:09
+========================================
+
+Chunk 49/96
+success=54 | permanent=46 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.957s max
+chunk_runtime=00:01:34 | chunk_rate=63.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195300/200000
+Success: 120681
+Permanent: 73826
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:17:44
+Total runtime: 53:59:43
+Session rate: 63.03 IDs/min
+ETA: 01:14:33
+========================================
+
+Chunk 50/96
+success=58 | permanent=42 | temporary=0 | challenge=0
+http_requests=101 | fallbacks=1
+avg_latency=0.471s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=1.072s avg | 0.945s min | 13.120s max
+chunk_runtime=00:01:48 | chunk_rate=55.40 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195400/200000
+Success: 120739
+Permanent: 73868
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:19:32
+Total runtime: 54:01:31
+Session rate: 62.86 IDs/min
+ETA: 01:13:10
+========================================
+
+Chunk 51/96
+success=66 | permanent=34 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.321s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.958s max
+chunk_runtime=00:01:34 | chunk_rate=63.26 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195500/200000
+Success: 120805
+Permanent: 73902
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:21:07
+Total runtime: 54:03:06
+Session rate: 62.87 IDs/min
+ETA: 01:11:34
+========================================
+
+Chunk 52/96
+success=48 | permanent=52 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.295s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.937s min | 0.964s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195600/200000
+Success: 120853
+Permanent: 73954
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:22:42
+Total runtime: 54:04:41
+Session rate: 62.87 IDs/min
+ETA: 01:09:59
+========================================
+
+Chunk 53/96
+success=43 | permanent=57 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.295s | avg_processing=0.000s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.939s min | 0.958s max
+chunk_runtime=00:01:34 | chunk_rate=63.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195700/200000
+Success: 120896
+Permanent: 74011
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:24:17
+Total runtime: 54:06:16
+Session rate: 62.88 IDs/min
+ETA: 01:08:23
+========================================
+
+Chunk 54/96
+success=46 | permanent=54 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.355s | avg_processing=0.000s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.944s min | 0.960s max
+chunk_runtime=00:01:35 | chunk_rate=63.04 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195800/200000
+Success: 120942
+Permanent: 74065
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:25:52
+Total runtime: 54:07:51
+Session rate: 62.88 IDs/min
+ETA: 01:06:47
+========================================
+
+Chunk 55/96
+success=56 | permanent=44 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.28 IDs/min
+
+========================================
+FIRST PASS
+Processed: 195900/200000
+Success: 120998
+Permanent: 74109
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:27:27
+Total runtime: 54:09:26
+Session rate: 62.89 IDs/min
+ETA: 01:05:11
+========================================
+
+Chunk 56/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.300s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196000/200000
+Success: 121081
+Permanent: 74126
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:29:02
+Total runtime: 54:11:01
+Session rate: 62.89 IDs/min
+ETA: 01:03:36
+========================================
+
+Chunk 57/96
+success=76 | permanent=24 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.302s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.958s max
+chunk_runtime=00:01:34 | chunk_rate=63.16 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196100/200000
+Success: 121157
+Permanent: 74150
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:30:37
+Total runtime: 54:12:36
+Session rate: 62.90 IDs/min
+ETA: 01:02:00
+========================================
+
+Chunk 58/96
+success=79 | permanent=21 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.308s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.958s max
+chunk_runtime=00:01:35 | chunk_rate=63.12 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196200/200000
+Success: 121236
+Permanent: 74171
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:32:12
+Total runtime: 54:14:11
+Session rate: 62.90 IDs/min
+ETA: 01:00:24
+========================================
+
+Chunk 59/96
+success=84 | permanent=16 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.960s max
+chunk_runtime=00:01:34 | chunk_rate=63.17 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196300/200000
+Success: 121320
+Permanent: 74187
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:33:47
+Total runtime: 54:15:46
+Session rate: 62.90 IDs/min
+ETA: 00:58:49
+========================================
+
+Chunk 60/96
+success=82 | permanent=18 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.304s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.960s max
+chunk_runtime=00:01:34 | chunk_rate=63.20 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196400/200000
+Success: 121402
+Permanent: 74205
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:35:22
+Total runtime: 54:17:21
+Session rate: 62.91 IDs/min
+ETA: 00:57:13
+========================================
+
+Chunk 61/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.306s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.926s min | 0.971s max
+chunk_runtime=00:01:35 | chunk_rate=62.99 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196500/200000
+Success: 121474
+Permanent: 74233
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:36:57
+Total runtime: 54:18:56
+Session rate: 62.91 IDs/min
+ETA: 00:55:38
+========================================
+
+Chunk 62/96
+success=71 | permanent=29 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.305s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.957s max
+chunk_runtime=00:01:34 | chunk_rate=63.37 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196600/200000
+Success: 121545
+Permanent: 74262
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:38:32
+Total runtime: 54:20:31
+Session rate: 62.92 IDs/min
+ETA: 00:54:02
+========================================
+
+Chunk 63/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.303s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.957s max
+chunk_runtime=00:01:35 | chunk_rate=63.15 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196700/200000
+Success: 121597
+Permanent: 74310
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:40:07
+Total runtime: 54:22:06
+Session rate: 62.92 IDs/min
+ETA: 00:52:26
+========================================
+
+Chunk 64/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.293s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.939s min | 0.962s max
+chunk_runtime=00:01:35 | chunk_rate=63.16 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196800/200000
+Success: 121649
+Permanent: 74358
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:41:42
+Total runtime: 54:23:41
+Session rate: 62.92 IDs/min
+ETA: 00:50:51
+========================================
+
+Chunk 65/96
+success=82 | permanent=18 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.319s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.937s min | 0.963s max
+chunk_runtime=00:01:35 | chunk_rate=63.09 IDs/min
+
+========================================
+FIRST PASS
+Processed: 196900/200000
+Success: 121731
+Permanent: 74376
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:43:17
+Total runtime: 54:25:16
+Session rate: 62.93 IDs/min
+ETA: 00:49:15
+========================================
+
+Chunk 66/96
+success=80 | permanent=20 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.305s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.942s min | 0.960s max
+chunk_runtime=00:01:34 | chunk_rate=63.20 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197000/200000
+Success: 121811
+Permanent: 74396
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:44:52
+Total runtime: 54:26:51
+Session rate: 62.93 IDs/min
+ETA: 00:47:40
+========================================
+
+Chunk 67/96
+success=81 | permanent=19 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.302s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.937s min | 0.961s max
+chunk_runtime=00:01:34 | chunk_rate=63.21 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197100/200000
+Success: 121892
+Permanent: 74415
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:46:27
+Total runtime: 54:28:26
+Session rate: 62.94 IDs/min
+ETA: 00:46:04
+========================================
+
+Chunk 68/96
+success=75 | permanent=25 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.308s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.935s min | 0.963s max
+chunk_runtime=00:01:34 | chunk_rate=63.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197200/200000
+Success: 121967
+Permanent: 74440
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:48:02
+Total runtime: 54:30:01
+Session rate: 62.94 IDs/min
+ETA: 00:44:29
+========================================
+
+Chunk 69/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.300s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.958s max
+chunk_runtime=00:01:35 | chunk_rate=63.13 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197300/200000
+Success: 122039
+Permanent: 74468
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:49:37
+Total runtime: 54:31:36
+Session rate: 62.94 IDs/min
+ETA: 00:42:53
+========================================
+
+Chunk 70/96
+success=68 | permanent=32 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.307s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.958s max
+chunk_runtime=00:01:34 | chunk_rate=63.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197400/200000
+Success: 122107
+Permanent: 74500
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:51:12
+Total runtime: 54:33:11
+Session rate: 62.95 IDs/min
+ETA: 00:41:18
+========================================
+
+Chunk 71/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=101 | fallbacks=1
+avg_latency=0.489s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.956s max
+chunk_runtime=00:01:35 | chunk_rate=62.55 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197500/200000
+Success: 122159
+Permanent: 74548
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:52:48
+Total runtime: 54:34:47
+Session rate: 62.94 IDs/min
+ETA: 00:39:43
+========================================
+
+Chunk 72/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.317s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.943s min | 0.956s max
+chunk_runtime=00:01:35 | chunk_rate=63.08 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197600/200000
+Success: 122242
+Permanent: 74565
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:54:23
+Total runtime: 54:36:22
+Session rate: 62.94 IDs/min
+ETA: 00:38:07
+========================================
+
+Chunk 73/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.313s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.954s max
+chunk_runtime=00:01:34 | chunk_rate=63.23 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197700/200000
+Success: 122325
+Permanent: 74582
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:55:58
+Total runtime: 54:37:57
+Session rate: 62.94 IDs/min
+ETA: 00:36:32
+========================================
+
+Chunk 74/96
+success=31 | permanent=69 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.353s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.963s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197800/200000
+Success: 122356
+Permanent: 74651
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:57:33
+Total runtime: 54:39:32
+Session rate: 62.95 IDs/min
+ETA: 00:34:56
+========================================
+
+Chunk 75/96
+success=65 | permanent=35 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.299s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.940s min | 0.962s max
+chunk_runtime=00:01:35 | chunk_rate=63.14 IDs/min
+
+========================================
+FIRST PASS
+Processed: 197900/200000
+Success: 122421
+Permanent: 74686
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 01:59:08
+Total runtime: 54:41:07
+Session rate: 62.95 IDs/min
+ETA: 00:33:21
+========================================
+
+Chunk 76/96
+success=68 | permanent=32 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.302s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.959s max
+chunk_runtime=00:01:34 | chunk_rate=63.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198000/200000
+Success: 122489
+Permanent: 74718
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 02:00:43
+Total runtime: 54:42:42
+Session rate: 62.95 IDs/min
+ETA: 00:31:46
+========================================
+
+Chunk 77/96
+success=69 | permanent=31 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.333s | avg_processing=0.001s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.945s min | 0.955s max
+chunk_runtime=00:01:35 | chunk_rate=63.11 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198100/200000
+Success: 122558
+Permanent: 74749
+Temporary: 793
+Global interval: 0.95s
+Session runtime: 02:02:18
+Total runtime: 54:44:17
+Session rate: 62.96 IDs/min
+ETA: 00:30:10
+========================================
+
+Chunk 78/96
+success=2 | permanent=0 | temporary=98 | challenge=98
+http_requests=100 | fallbacks=0
+avg_latency=0.051s | avg_processing=0.000s
+configured_interval=0.95s
+actual_start_gap=0.950s avg | 0.941s min | 0.958s max
+chunk_runtime=00:01:34 | chunk_rate=63.39 IDs/min
+High challenge 98.0%
+Interval -> 1.15s
+Cooldown 420s
+
+========================================
+FIRST PASS
+Processed: 198200/200000
+Success: 122560
+Permanent: 74749
+Temporary: 891
+Global interval: 1.15s
+Session runtime: 02:10:53
+Total runtime: 54:52:52
+Session rate: 59.59 IDs/min
+ETA: 00:30:12
+========================================
+
+Chunk 79/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.340s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.141s min | 1.160s max
+chunk_runtime=00:01:54 | chunk_rate=52.52 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198300/200000
+Success: 122643
+Permanent: 74766
+Temporary: 891
+Global interval: 1.15s
+Session runtime: 02:12:47
+Total runtime: 54:54:46
+Session rate: 59.49 IDs/min
+ETA: 00:28:34
+========================================
+
+Chunk 80/96
+success=83 | permanent=17 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.308s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.139s min | 1.159s max
+chunk_runtime=00:01:54 | chunk_rate=52.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198400/200000
+Success: 122726
+Permanent: 74783
+Temporary: 891
+Global interval: 1.15s
+Session runtime: 02:14:42
+Total runtime: 54:56:41
+Session rate: 59.39 IDs/min
+ETA: 00:26:56
+========================================
+
+Chunk 81/96
+success=81 | permanent=19 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.304s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.142s min | 1.160s max
+chunk_runtime=00:01:54 | chunk_rate=52.19 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198500/200000
+Success: 122807
+Permanent: 74802
+Temporary: 891
+Global interval: 1.15s
+Session runtime: 02:16:37
+Total runtime: 54:58:36
+Session rate: 59.29 IDs/min
+ETA: 00:25:18
+========================================
+
+Chunk 82/96
+success=76 | permanent=24 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.330s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.140s min | 1.161s max
+chunk_runtime=00:01:55 | chunk_rate=52.17 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198600/200000
+Success: 122883
+Permanent: 74826
+Temporary: 891
+Global interval: 1.15s
+Session runtime: 02:18:32
+Total runtime: 55:00:31
+Session rate: 59.19 IDs/min
+ETA: 00:23:39
+========================================
+
+Chunk 83/96
+success=76 | permanent=24 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.321s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.135s min | 1.161s max
+chunk_runtime=00:01:55 | chunk_rate=52.15 IDs/min
+5 clean chunks -> interval 1.10s
+
+========================================
+FIRST PASS
+Processed: 198700/200000
+Success: 122959
+Permanent: 74850
+Temporary: 891
+Global interval: 1.10s
+Session runtime: 02:20:27
+Total runtime: 55:02:26
+Session rate: 59.09 IDs/min
+ETA: 00:21:59
+========================================
+
+Chunk 84/96
+success=72 | permanent=28 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.315s | avg_processing=0.001s
+configured_interval=1.10s
+actual_start_gap=1.100s avg | 1.091s min | 1.106s max
+chunk_runtime=00:01:49 | chunk_rate=54.56 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198800/200000
+Success: 123031
+Permanent: 74878
+Temporary: 891
+Global interval: 1.10s
+Session runtime: 02:22:17
+Total runtime: 55:04:16
+Session rate: 59.03 IDs/min
+ETA: 00:20:19
+========================================
+
+Chunk 85/96
+success=80 | permanent=20 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.338s | avg_processing=0.001s
+configured_interval=1.10s
+actual_start_gap=1.100s avg | 1.092s min | 1.106s max
+chunk_runtime=00:01:49 | chunk_rate=54.55 IDs/min
+
+========================================
+FIRST PASS
+Processed: 198900/200000
+Success: 123111
+Permanent: 74898
+Temporary: 891
+Global interval: 1.10s
+Session runtime: 02:24:07
+Total runtime: 55:06:06
+Session rate: 58.98 IDs/min
+ETA: 00:18:39
+========================================
+
+Chunk 86/96
+success=79 | permanent=21 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.309s | avg_processing=0.001s
+configured_interval=1.10s
+actual_start_gap=1.100s avg | 1.088s min | 1.113s max
+chunk_runtime=00:01:49 | chunk_rate=54.55 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199000/200000
+Success: 123190
+Permanent: 74919
+Temporary: 891
+Global interval: 1.10s
+Session runtime: 02:25:57
+Total runtime: 55:07:56
+Session rate: 58.92 IDs/min
+ETA: 00:16:58
+========================================
+
+Chunk 87/96
+success=76 | permanent=24 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.001s
+configured_interval=1.10s
+actual_start_gap=1.100s avg | 1.090s min | 1.115s max
+chunk_runtime=00:01:49 | chunk_rate=54.58 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199100/200000
+Success: 123266
+Permanent: 74943
+Temporary: 891
+Global interval: 1.10s
+Session runtime: 02:27:47
+Total runtime: 55:09:46
+Session rate: 58.87 IDs/min
+ETA: 00:15:17
+========================================
+
+Chunk 88/96
+success=75 | permanent=25 | temporary=0 | challenge=0
+http_requests=101 | fallbacks=1
+avg_latency=0.602s | avg_processing=0.001s
+configured_interval=1.10s
+actual_start_gap=1.100s avg | 1.090s min | 1.114s max
+chunk_runtime=00:01:51 | chunk_rate=54.01 IDs/min
+5 clean chunks -> interval 1.05s
+
+========================================
+FIRST PASS
+Processed: 199200/200000
+Success: 123341
+Permanent: 74968
+Temporary: 891
+Global interval: 1.05s
+Session runtime: 02:29:38
+Total runtime: 55:11:37
+Session rate: 58.81 IDs/min
+ETA: 00:13:36
+========================================
+
+Chunk 89/96
+success=56 | permanent=44 | temporary=0 | challenge=0
+http_requests=101 | fallbacks=1
+avg_latency=0.459s | avg_processing=0.001s
+configured_interval=1.05s
+actual_start_gap=1.050s avg | 1.040s min | 1.061s max
+chunk_runtime=00:01:46 | chunk_rate=56.54 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199300/200000
+Success: 123397
+Permanent: 75012
+Temporary: 891
+Global interval: 1.05s
+Session runtime: 02:31:24
+Total runtime: 55:13:23
+Session rate: 58.78 IDs/min
+ETA: 00:11:54
+========================================
+
+Chunk 90/96
+success=48 | permanent=52 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.318s | avg_processing=0.000s
+configured_interval=1.05s
+actual_start_gap=1.050s avg | 1.038s min | 1.063s max
+chunk_runtime=00:01:44 | chunk_rate=57.18 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199400/200000
+Success: 123445
+Permanent: 75064
+Temporary: 891
+Global interval: 1.05s
+Session runtime: 02:33:09
+Total runtime: 55:15:08
+Session rate: 58.76 IDs/min
+ETA: 00:10:12
+========================================
+
+Chunk 91/96
+success=65 | permanent=35 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.327s | avg_processing=0.001s
+configured_interval=1.05s
+actual_start_gap=1.050s avg | 1.042s min | 1.059s max
+chunk_runtime=00:01:44 | chunk_rate=57.15 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199500/200000
+Success: 123510
+Permanent: 75099
+Temporary: 891
+Global interval: 1.05s
+Session runtime: 02:34:54
+Total runtime: 55:16:53
+Session rate: 58.74 IDs/min
+ETA: 00:08:30
+========================================
+
+Chunk 92/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.324s | avg_processing=0.001s
+configured_interval=1.05s
+actual_start_gap=1.050s avg | 1.039s min | 1.064s max
+chunk_runtime=00:01:45 | chunk_rate=57.13 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199600/200000
+Success: 123562
+Permanent: 75147
+Temporary: 891
+Global interval: 1.05s
+Session runtime: 02:36:39
+Total runtime: 55:18:38
+Session rate: 58.72 IDs/min
+ETA: 00:06:48
+========================================
+
+Chunk 93/96
+success=60 | permanent=40 | temporary=0 | challenge=0
+http_requests=102 | fallbacks=2
+avg_latency=0.620s | avg_processing=0.001s
+configured_interval=1.05s
+actual_start_gap=1.050s avg | 1.043s min | 1.057s max
+chunk_runtime=00:01:47 | chunk_rate=56.01 IDs/min
+5 clean chunks -> interval 1.00s
+
+========================================
+FIRST PASS
+Processed: 199700/200000
+Success: 123622
+Permanent: 75187
+Temporary: 891
+Global interval: 1.00s
+Session runtime: 02:38:26
+Total runtime: 55:20:25
+Session rate: 58.69 IDs/min
+ETA: 00:05:06
+========================================
+
+Chunk 94/96
+success=61 | permanent=39 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.316s | avg_processing=0.001s
+configured_interval=1.00s
+actual_start_gap=1.000s avg | 0.990s min | 1.010s max
+chunk_runtime=00:01:40 | chunk_rate=59.99 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199800/200000
+Success: 123683
+Permanent: 75226
+Temporary: 891
+Global interval: 1.00s
+Session runtime: 02:40:06
+Total runtime: 55:22:05
+Session rate: 58.71 IDs/min
+ETA: 00:03:24
+========================================
+
+Chunk 95/96
+success=57 | permanent=43 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.311s | avg_processing=0.001s
+configured_interval=1.00s
+actual_start_gap=1.000s avg | 0.987s min | 1.013s max
+chunk_runtime=00:01:40 | chunk_rate=59.92 IDs/min
+
+========================================
+FIRST PASS
+Processed: 199900/200000
+Success: 123740
+Permanent: 75269
+Temporary: 891
+Global interval: 1.00s
+Session runtime: 02:41:47
+Total runtime: 55:23:46
+Session rate: 58.72 IDs/min
+ETA: 00:01:42
+========================================
+
+Chunk 96/96
+success=52 | permanent=48 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.317s | avg_processing=0.001s
+configured_interval=1.00s
+actual_start_gap=1.000s avg | 0.991s min | 1.009s max
+chunk_runtime=00:01:39 | chunk_rate=60.07 IDs/min
+
+========================================
+FIRST PASS
+Processed: 200000/200000
+Success: 123792
+Permanent: 75317
+Temporary: 891
+Global interval: 1.00s
+Session runtime: 02:43:26
+Total runtime: 55:25:25
+Session rate: 58.73 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry round 1 | IDs=891
+Waiting 60s...
+
+Retry 1 chunk 1/9
+success=90 | permanent=10 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.321s | avg_processing=0.002s
+configured_interval=1.25s
+actual_start_gap=1.250s avg | 1.240s min | 1.260s max
+chunk_runtime=00:02:04 | chunk_rate=48.37 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 123882
+Permanent: 75327
+Temporary: 791
+Global interval: 1.25s
+Session runtime: 02:46:31
+Total runtime: 55:28:30
+Session rate: 57.65 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 2/9
+success=55 | permanent=45 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.303s | avg_processing=0.001s
+configured_interval=1.25s
+actual_start_gap=1.250s avg | 1.236s min | 1.265s max
+chunk_runtime=00:02:05 | chunk_rate=48.00 IDs/min
+5 clean chunks -> interval 1.20s
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 123937
+Permanent: 75372
+Temporary: 691
+Global interval: 1.20s
+Session runtime: 02:48:36
+Total runtime: 55:30:35
+Session rate: 56.94 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 3/9
+success=43 | permanent=57 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.306s | avg_processing=0.001s
+configured_interval=1.20s
+actual_start_gap=1.200s avg | 1.181s min | 1.215s max
+chunk_runtime=00:02:00 | chunk_rate=49.98 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 123980
+Permanent: 75429
+Temporary: 591
+Global interval: 1.20s
+Session runtime: 02:50:36
+Total runtime: 55:32:35
+Session rate: 56.27 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 4/9
+success=32 | permanent=68 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.312s | avg_processing=0.000s
+configured_interval=1.20s
+actual_start_gap=1.200s avg | 1.191s min | 1.211s max
+chunk_runtime=00:02:00 | chunk_rate=50.00 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 124012
+Permanent: 75497
+Temporary: 491
+Global interval: 1.20s
+Session runtime: 02:52:36
+Total runtime: 55:34:35
+Session rate: 55.62 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 5/9
+success=47 | permanent=53 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.324s | avg_processing=0.000s
+configured_interval=1.20s
+actual_start_gap=1.200s avg | 1.194s min | 1.210s max
+chunk_runtime=00:01:59 | chunk_rate=50.03 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 124059
+Permanent: 75550
+Temporary: 391
+Global interval: 1.20s
+Session runtime: 02:54:36
+Total runtime: 55:36:35
+Session rate: 54.98 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 6/9
+success=39 | permanent=61 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.304s | avg_processing=0.000s
+configured_interval=1.20s
+actual_start_gap=1.200s avg | 1.174s min | 1.225s max
+chunk_runtime=00:02:00 | chunk_rate=50.00 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 124098
+Permanent: 75611
+Temporary: 291
+Global interval: 1.20s
+Session runtime: 02:56:36
+Total runtime: 55:38:35
+Session rate: 54.36 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 7/9
+success=55 | permanent=45 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.358s | avg_processing=0.001s
+configured_interval=1.20s
+actual_start_gap=1.200s avg | 1.188s min | 1.211s max
+chunk_runtime=00:02:00 | chunk_rate=49.99 IDs/min
+5 clean chunks -> interval 1.15s
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 124153
+Permanent: 75656
+Temporary: 191
+Global interval: 1.15s
+Session runtime: 02:58:36
+Total runtime: 55:40:35
+Session rate: 53.75 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 8/9
+success=73 | permanent=27 | temporary=0 | challenge=0
+http_requests=100 | fallbacks=0
+avg_latency=0.320s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.143s min | 1.156s max
+chunk_runtime=00:01:55 | chunk_rate=52.16 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 124226
+Permanent: 75683
+Temporary: 91
+Global interval: 1.15s
+Session runtime: 03:00:31
+Total runtime: 55:42:30
+Session rate: 53.18 IDs/min
+ETA: 00:00:00
+========================================
+
+Retry 1 chunk 9/9
+success=73 | permanent=18 | temporary=0 | challenge=0
+http_requests=91 | fallbacks=0
+avg_latency=0.314s | avg_processing=0.001s
+configured_interval=1.15s
+actual_start_gap=1.150s avg | 1.143s min | 1.159s max
+chunk_runtime=00:01:44 | chunk_rate=52.21 IDs/min
+
+========================================
+RETRY 1
+Processed: 200000/200000
+Success: 124299
+Permanent: 75701
+Temporary: 0
+Global interval: 1.15s
+Session runtime: 03:02:15
+Total runtime: 55:44:14
+Session rate: 52.67 IDs/min
+ETA: 00:00:00
+========================================
+Retry round 2: nothing to retry
+
+Exporting JSON...
+Saved output/products_001.json
+Saved output/products_002.json
+Saved output/products_003.json
+Saved output/products_004.json
+Saved output/products_005.json
+Saved output/products_006.json
+Saved output/products_007.json
+Saved output/products_008.json
+Saved output/products_009.json
+Saved output/products_010.json
+Saved output/products_011.json
+Saved output/products_012.json
+Saved output/products_013.json
+Saved output/products_014.json
+Saved output/products_015.json
+Saved output/products_016.json
+Saved output/products_017.json
+Saved output/products_018.json
+Saved output/products_019.json
+Saved output/products_020.json
+Saved output/products_021.json
+Saved output/products_022.json
+Saved output/products_023.json
+Saved output/products_024.json
+Saved output/products_025.json
+Saved output/products_026.json
+Saved output/products_027.json
+Saved output/products_028.json
+Saved output/products_029.json
+Saved output/products_030.json
+Saved output/products_031.json
+Saved output/products_032.json
+Saved output/products_033.json
+Saved output/products_034.json
+Saved output/products_035.json
+Saved output/products_036.json
+Saved output/products_037.json
+Saved output/products_038.json
+Saved output/products_039.json
+Saved output/products_040.json
+Saved output/products_041.json
+Saved output/products_042.json
+Saved output/products_043.json
+Saved output/products_044.json
+Saved output/products_045.json
+Saved output/products_046.json
+Saved output/products_047.json
+Saved output/products_048.json
+Saved output/products_049.json
+Saved output/products_050.json
+Saved output/products_051.json
+Saved output/products_052.json
+Saved output/products_053.json
+Saved output/products_054.json
+Saved output/products_055.json
+Saved output/products_056.json
+Saved output/products_057.json
+Saved output/products_058.json
+Saved output/products_059.json
+Saved output/products_060.json
+Saved output/products_061.json
+Saved output/products_062.json
+Saved output/products_063.json
+Saved output/products_064.json
+Saved output/products_065.json
+Saved output/products_066.json
+Saved output/products_067.json
+Saved output/products_068.json
+Saved output/products_069.json
+Saved output/products_070.json
+Saved output/products_071.json
+Saved output/products_072.json
+Saved output/products_073.json
+Saved output/products_074.json
+Saved output/products_075.json
+Saved output/products_076.json
+Saved output/products_077.json
+Saved output/products_078.json
+Saved output/products_079.json
+Saved output/products_080.json
+Saved output/products_081.json
+Saved output/products_082.json
+Saved output/products_083.json
+Saved output/products_084.json
+Saved output/products_085.json
+Saved output/products_086.json
+Saved output/products_087.json
+Saved output/products_088.json
+Saved output/products_089.json
+Saved output/products_090.json
+Saved output/products_091.json
+Saved output/products_092.json
+Saved output/products_093.json
+Saved output/products_094.json
+Saved output/products_095.json
+Saved output/products_096.json
+Saved output/products_097.json
+Saved output/products_098.json
+Saved output/products_099.json
+Saved output/products_100.json
+Saved output/products_101.json
+Saved output/products_102.json
+Saved output/products_103.json
+Saved output/products_104.json
+Saved output/products_105.json
+Saved output/products_106.json
+Saved output/products_107.json
+Saved output/products_108.json
+Saved output/products_109.json
+Saved output/products_110.json
+Saved output/products_111.json
+Saved output/products_112.json
+Saved output/products_113.json
+Saved output/products_114.json
+Saved output/products_115.json
+Saved output/products_116.json
+Saved output/products_117.json
+Saved output/products_118.json
+Saved output/products_119.json
+Saved output/products_120.json
+Saved output/products_121.json
+Saved output/products_122.json
+Saved output/products_123.json
+Saved output/products_124.json
+Saved output/products_125.json
+
+========================================
+FINAL RESULT
+========================================
+Input IDs: 200000
+Successful products: 124299
+Permanent errors: 75701
+Temporary unresolved: 0
+Classified: 200000/200000
+Final global interval: 1.15s
+Session runtime: 03:02:25
+Total runtime: 55:44:24
+Sessions: 2
+Validation: OK
+========================================
+
+============================================================
+PIPELINE FINISHED
+============================================================
+Finished at: 2026-09-21 20:43:25 (inferred from session runtime 03:02:25)
+Wall-clock runtime: 03:02:25
+Exit code: 0 (inferred from completed run / Validation: OK)
+Log file: crawler_full_20260921_174100.log
+============================================================

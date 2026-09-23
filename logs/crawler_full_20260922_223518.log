@@ -1,0 +1,180 @@
+============================================================
+TIKI DATA INGESTION PIPELINE
+============================================================
+Started at: 2026-09-22 22:35:18
+Host: eUbuntu
+User: eve
+Project: /home/eve/Desktop/project2/tiki_crawl
+Python: Python 3.10.12
+Test limit: full
+Log file: /home/eve/Desktop/project2/tiki_crawl/logs/crawler_full_20260922_223518.log
+============================================================
+
+========================================
+TIKI PRODUCTION CRAWLER
+========================================
+IDs: 200000
+Worker endpoints: 5
+Threads: 5
+Starting global interval: 1.0s
+Minimum global interval: 0.95s
+Database: state/crawler.db
+========================================
+Previous runtime: 55:44:24
+Session number: 3
+First started at: 2026-09-19T15:20:07
+Restored interval: 1.15s
+First-pass pending: 0
+Retry round 1: nothing to retry
+Retry round 2: nothing to retry
+
+Exporting JSON...
+Saved output/products_001.json
+Saved output/products_002.json
+Saved output/products_003.json
+Saved output/products_004.json
+Saved output/products_005.json
+Saved output/products_006.json
+Saved output/products_007.json
+Saved output/products_008.json
+Saved output/products_009.json
+Saved output/products_010.json
+Saved output/products_011.json
+Saved output/products_012.json
+Saved output/products_013.json
+Saved output/products_014.json
+Saved output/products_015.json
+Saved output/products_016.json
+Saved output/products_017.json
+Saved output/products_018.json
+Saved output/products_019.json
+Saved output/products_020.json
+Saved output/products_021.json
+Saved output/products_022.json
+Saved output/products_023.json
+Saved output/products_024.json
+Saved output/products_025.json
+Saved output/products_026.json
+Saved output/products_027.json
+Saved output/products_028.json
+Saved output/products_029.json
+Saved output/products_030.json
+Saved output/products_031.json
+Saved output/products_032.json
+Saved output/products_033.json
+Saved output/products_034.json
+Saved output/products_035.json
+Saved output/products_036.json
+Saved output/products_037.json
+Saved output/products_038.json
+Saved output/products_039.json
+Saved output/products_040.json
+Saved output/products_041.json
+Saved output/products_042.json
+Saved output/products_043.json
+Saved output/products_044.json
+Saved output/products_045.json
+Saved output/products_046.json
+Saved output/products_047.json
+Saved output/products_048.json
+Saved output/products_049.json
+Saved output/products_050.json
+Saved output/products_051.json
+Saved output/products_052.json
+Saved output/products_053.json
+Saved output/products_054.json
+Saved output/products_055.json
+Saved output/products_056.json
+Saved output/products_057.json
+Saved output/products_058.json
+Saved output/products_059.json
+Saved output/products_060.json
+Saved output/products_061.json
+Saved output/products_062.json
+Saved output/products_063.json
+Saved output/products_064.json
+Saved output/products_065.json
+Saved output/products_066.json
+Saved output/products_067.json
+Saved output/products_068.json
+Saved output/products_069.json
+Saved output/products_070.json
+Saved output/products_071.json
+Saved output/products_072.json
+Saved output/products_073.json
+Saved output/products_074.json
+Saved output/products_075.json
+Saved output/products_076.json
+Saved output/products_077.json
+Saved output/products_078.json
+Saved output/products_079.json
+Saved output/products_080.json
+Saved output/products_081.json
+Saved output/products_082.json
+Saved output/products_083.json
+Saved output/products_084.json
+Saved output/products_085.json
+Saved output/products_086.json
+Saved output/products_087.json
+Saved output/products_088.json
+Saved output/products_089.json
+Saved output/products_090.json
+Saved output/products_091.json
+Saved output/products_092.json
+Saved output/products_093.json
+Saved output/products_094.json
+Saved output/products_095.json
+Saved output/products_096.json
+Saved output/products_097.json
+Saved output/products_098.json
+Saved output/products_099.json
+Saved output/products_100.json
+Saved output/products_101.json
+Saved output/products_102.json
+Saved output/products_103.json
+Saved output/products_104.json
+Saved output/products_105.json
+Saved output/products_106.json
+Saved output/products_107.json
+Saved output/products_108.json
+Saved output/products_109.json
+Saved output/products_110.json
+Saved output/products_111.json
+Saved output/products_112.json
+Saved output/products_113.json
+Saved output/products_114.json
+Saved output/products_115.json
+Saved output/products_116.json
+Saved output/products_117.json
+Saved output/products_118.json
+Saved output/products_119.json
+Saved output/products_120.json
+Saved output/products_121.json
+Saved output/products_122.json
+Saved output/products_123.json
+Saved output/products_124.json
+Saved output/products_125.json
+
+========================================
+FINAL RESULT
+========================================
+Input IDs: 200000
+Successful products: 124299
+Permanent errors: 75701
+Temporary unresolved: 0
+Classified: 200000/200000
+Final global interval: 1.15s
+Session runtime: 00:00:12
+Total runtime: 55:44:37
+Sessions: 3
+Validation: OK
+========================================
+
+============================================================
+PIPELINE FINISHED
+============================================================
+Finished at: 2026-09-22 22:35:31
+Wall-clock runtime: 00:00:13
+Exit code: 0
+Log file: /home/eve/Desktop/project2/tiki_crawl/logs/crawler_full_20260922_223518.log
+============================================================

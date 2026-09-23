@@ -1,158 +1,65 @@
 import csv
+import itertools
 import json
 import os
 import re
 import sqlite3
 import threading
 import time
-import itertools
+
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
 
 import requests
-
 from bs4 import BeautifulSoup
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-# ============================================================
+##########
 # CONFIG
-# ============================================================
+##########
 
-WORKER_URLS = [
-    "https://project2-w1.mngoc2603.workers.dev",
-
-    "https://project2-w2.mngoc2603.workers.dev",
-
-    "https://project2-w3.mngoc2603.workers.dev",
-
-    "https://project2-w4.mngoc2603.workers.dev",
-
-    "https://project2-w5.mngoc2603.workers.dev",
-]
-
-INPUT_FILE = "products_id.csv"
-
-# None = full 200k
-TEST_LIMIT = 10000
-
-MAX_THREADS = 5
-
-CHUNK_SIZE = 100
-
-REQUEST_TIMEOUT = 15
-
-PRODUCTS_PER_FILE = 1000
-
-
-# ============================================================
-# GLOBAL PACING
-# ============================================================
-
-# Start from known-stable benchmark
-START_INTERVAL = 0.85
-
-# Do not go faster than this automatically
-MIN_INTERVAL = 0.85
-
-# Slowest adaptive rate
-MAX_INTERVAL = 2.00
-
-SPEED_UP_STEP = 0.05
-
-SLOW_DOWN_SMALL = 0.15
-SLOW_DOWN_MEDIUM = 0.30
-SLOW_DOWN_HIGH = 0.50
-
-CLEAN_CHUNKS_TO_SPEED_UP = 3
-
-
-# ============================================================
-# CHALLENGE THRESHOLDS
-# ============================================================
-
-LOW_CHALLENGE_RATE = 0.03
-MEDIUM_CHALLENGE_RATE = 0.10
-HIGH_CHALLENGE_RATE = 0.30
-
-MEDIUM_COOLDOWN = 300
-HIGH_COOLDOWN = 900
-
-
-# ============================================================
-# RETRY
-# ============================================================
-
-RETRY_ROUNDS = 2
-
-RETRY_WAIT = 60
-
-# Retry slower than normal crawl
-RETRY_MIN_INTERVAL = 1.50
-
-
-# ============================================================
-# FALLBACK
-# ============================================================
-
-# Only endpoint-specific failures use immediate fallback.
-#
-# HTML challenge does NOT use immediate fallback.
-#
-# Maximum:
-# original request + 1 fallback attempt
-
-FALLBACK_ON = {
-    "timeout",
-    "connection",
-    "http_502",
-    "http_503",
-    "http_504",
-    "empty",
-}
-
-
-# ============================================================
-# OUTPUT
-# ============================================================
-
-OUTPUT_DIR = "output"
-ERROR_DIR = "errors"
-STATE_DIR = "state"
-
-DATABASE_FILE = os.path.join(
-    STATE_DIR,
-    "crawler.db"
-)
-
-PERMANENT_ERROR_FILE = os.path.join(
+from config import (
+    CHUNK_SIZE,
+    CLEAN_CHUNKS_TO_SPEED_UP,
+    DATABASE_FILE,
     ERROR_DIR,
-    "permanent_errors.json"
-)
-
-TEMPORARY_ERROR_FILE = os.path.join(
-    ERROR_DIR,
-    "temporary_errors.json"
-)
-
-
-os.makedirs(
+    FALLBACK_ON,
+    HIGH_CHALLENGE_RATE,
+    HIGH_COOLDOWN,
+    INPUT_FILE,
+    LOW_CHALLENGE_RATE,
+    LOW_COOLDOWN,
+    MAX_INTERVAL,
+    MAX_THREADS,
+    MEDIUM_CHALLENGE_RATE,
+    MEDIUM_COOLDOWN,
+    MIN_INTERVAL,
     OUTPUT_DIR,
-    exist_ok=True
-)
-
-os.makedirs(
-    ERROR_DIR,
-    exist_ok=True
-)
-
-os.makedirs(
+    PERMANENT_ERROR_FILE,
+    PRODUCTS_PER_FILE,
+    REQUEST_TIMEOUT,
+    RETRY_MIN_INTERVAL,
+    RETRY_ROUNDS,
+    RETRY_WAIT,
+    SLOW_DOWN_HIGH,
+    SLOW_DOWN_MEDIUM,
+    SLOW_DOWN_SMALL,
+    SPEED_UP_STEP,
+    START_INTERVAL,
     STATE_DIR,
-    exist_ok=True
+    TEMPORARY_ERROR_FILE,
+    TEST_LIMIT,
+    WORKER_URLS,
 )
 
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+os.makedirs(ERROR_DIR, exist_ok=True)
+os.makedirs(STATE_DIR, exist_ok=True)
 
-# ============================================================
+
+##########
 # HELPERS
-# ============================================================
+##########
 
 def format_time(seconds):
 
@@ -207,19 +114,26 @@ def load_product_ids(filename):
         encoding="utf-8-sig"
     ) as file:
 
-        reader = csv.DictReader(file)
+        reader = csv.DictReader(
+            file
+        )
 
         for row in reader:
 
-            product_id = row.get("id")
+            product_id = row.get(
+                "id"
+            )
 
             if product_id:
 
                 product_ids.append(
-                    str(product_id).strip()
+                    str(
+                        product_id
+                    ).strip()
                 )
 
-    # remove duplicate IDs
+    # Remove duplicate IDs,
+    # preserve original order.
     return list(
         dict.fromkeys(
             product_ids
@@ -227,9 +141,9 @@ def load_product_ids(filename):
     )
 
 
-# ============================================================
-# THREAD LOCAL SESSION
-# ============================================================
+##########
+# THREAD-LOCAL REQUEST SESSION
+##########
 
 thread_local = threading.local()
 
@@ -264,19 +178,42 @@ def get_session():
     return thread_local.session
 
 
-# ============================================================
-# SHARED GLOBAL PACER
-# ============================================================
+##########
+# PRECISE SHARED RATE LIMITER
+##########
 
-class SharedPacer:
+class SharedRateLimiter:
+    """
+    Each caller reserves an absolute future request slot.
 
-    def __init__(self, interval):
+    Important difference from the old pacer:
+
+        - lock is held only while assigning a slot
+        - sleep happens OUTSIDE the lock
+        - threads can reserve future slots independently
+
+    Example interval = 1.05:
+
+        Thread A -> slot 0.00
+        Thread B -> slot 1.05
+        Thread C -> slot 2.10
+        Thread D -> slot 3.15
+        Thread E -> slot 4.20
+
+    This does NOT intentionally increase the configured
+    aggregate request-start rate.
+    """
+
+    def __init__(
+        self,
+        interval
+    ):
 
         self.interval = interval
 
         self.lock = threading.Lock()
 
-        self.last_request_time = 0.0
+        self.next_slot = 0.0
 
 
     def wait(self):
@@ -285,28 +222,37 @@ class SharedPacer:
 
             now = time.monotonic()
 
-            elapsed = (
-                now
-                - self.last_request_time
+            slot = max(
+                now,
+                self.next_slot
             )
 
-            wait_time = (
-                self.interval
-                - elapsed
-            )
-
-            if wait_time > 0:
-
-                time.sleep(
-                    wait_time
-                )
-
-            self.last_request_time = (
-                time.monotonic()
+            self.next_slot = (
+                slot
+                + self.interval
             )
 
 
-    def set_interval(self, value):
+        # Sleep outside lock.
+        while True:
+
+            remaining = (
+                slot
+                - time.monotonic()
+            )
+
+            if remaining <= 0:
+                break
+
+            time.sleep(
+                remaining
+            )
+
+
+    def set_interval(
+        self,
+        value
+    ):
 
         value = max(
             MIN_INTERVAL,
@@ -328,14 +274,84 @@ class SharedPacer:
             return self.interval
 
 
-pacer = SharedPacer(
+rate_limiter = SharedRateLimiter(
     START_INTERVAL
 )
 
 
-# ============================================================
+##########
+# METRICS
+##########
+
+metrics_lock = threading.Lock()
+
+total_http_requests = 0
+total_fallbacks = 0
+
+total_request_latency = 0.0
+
+total_processing_time = 0.0
+total_processing_count = 0
+
+request_start_times = []
+
+
+def record_request_start():
+
+    global total_http_requests
+
+    timestamp = time.perf_counter()
+
+    with metrics_lock:
+
+        total_http_requests += 1
+
+        request_start_times.append(
+            timestamp
+        )
+
+    return timestamp
+
+
+def record_request_latency(
+    latency
+):
+
+    global total_request_latency
+
+    with metrics_lock:
+
+        total_request_latency += latency
+
+
+def record_processing_time(
+    processing_time
+):
+
+    global total_processing_time
+    global total_processing_count
+
+    with metrics_lock:
+
+        total_processing_time += (
+            processing_time
+        )
+
+        total_processing_count += 1
+
+
+def record_fallback():
+
+    global total_fallbacks
+
+    with metrics_lock:
+
+        total_fallbacks += 1
+
+
+##########
 # ENDPOINT POOL
-# ============================================================
+##########
 
 endpoint_lock = threading.Lock()
 
@@ -347,22 +363,32 @@ def get_next_endpoint(
 ):
 
     if exclude is None:
+
         exclude = set()
+
 
     with endpoint_lock:
 
         for _ in range(
-            len(WORKER_URLS)
+            len(
+                WORKER_URLS
+            )
         ):
 
             index = (
-                next(endpoint_counter)
-                % len(WORKER_URLS)
+                next(
+                    endpoint_counter
+                )
+                % len(
+                    WORKER_URLS
+                )
             )
 
-            endpoint = WORKER_URLS[
-                index
-            ]
+            endpoint = (
+                WORKER_URLS[
+                    index
+                ]
+            )
 
             if endpoint not in exclude:
 
@@ -371,15 +397,30 @@ def get_next_endpoint(
     return None
 
 
-# ============================================================
+##########
 # DATABASE
-# ============================================================
+##########
 
 def connect_database():
 
     conn = sqlite3.connect(
         DATABASE_FILE
     )
+
+
+    # Better for long-running ingestion workloads.
+    conn.execute(
+        "PRAGMA journal_mode=WAL"
+    )
+
+    conn.execute(
+        "PRAGMA synchronous=NORMAL"
+    )
+
+    conn.execute(
+        "PRAGMA temp_store=MEMORY"
+    )
+
 
     conn.execute(
         """
@@ -404,6 +445,7 @@ def connect_database():
         """
     )
 
+
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS metadata (
@@ -415,6 +457,25 @@ def connect_database():
         """
     )
 
+
+    conn.execute(
+        """
+        CREATE INDEX IF NOT EXISTS
+        idx_results_status
+        ON results(status)
+        """
+    )
+
+
+    conn.execute(
+        """
+        CREATE INDEX IF NOT EXISTS
+        idx_results_status_attempts
+        ON results(status, attempts)
+        """
+    )
+
+
     conn.commit()
 
     return conn
@@ -423,7 +484,8 @@ def connect_database():
 def set_metadata(
     conn,
     key,
-    value
+    value,
+    commit=False
 ):
 
     conn.execute(
@@ -446,7 +508,10 @@ def set_metadata(
         )
     )
 
-    conn.commit()
+
+    if commit:
+
+        conn.commit()
 
 
 def get_metadata(
@@ -468,6 +533,7 @@ def get_metadata(
         )
     ).fetchone()
 
+
     if row is None:
 
         return default
@@ -475,12 +541,77 @@ def get_metadata(
     return row[0]
 
 
+##########
+# RUNTIME
+##########
+
+def checkpoint_runtime(
+    conn,
+    session_start_time,
+    previous_runtime
+):
+
+    current_session_runtime = (
+        time.time()
+        - session_start_time
+    )
+
+    total_runtime = (
+        previous_runtime
+        + current_session_runtime
+    )
+
+
+    set_metadata(
+        conn,
+        "total_runtime_seconds",
+        total_runtime,
+        commit=False
+    )
+
+
+    set_metadata(
+        conn,
+        "last_checkpoint_at",
+        datetime.now().isoformat(
+            timespec="seconds"
+        ),
+        commit=False
+    )
+
+
+    conn.commit()
+
+
+    return total_runtime
+
+
+def get_total_runtime(
+    session_start_time,
+    previous_runtime
+):
+
+    return (
+        previous_runtime
+        +
+        (
+            time.time()
+            - session_start_time
+        )
+    )
+
+
+##########
+# SAVE RESULT
+##########
+
 def save_result(
     conn,
     result
 ):
 
     product_json = None
+
 
     if result.get(
         "product"
@@ -537,7 +668,6 @@ def save_result(
             updated_at =
                 CURRENT_TIMESTAMP
         """,
-
         (
             result[
                 "product_id"
@@ -569,9 +699,9 @@ def save_result(
     )
 
 
-# ============================================================
-# SINGLE HTTP REQUEST
-# ============================================================
+##########
+# REQUEST PRODUCT
+##########
 
 def request_product(
     product_id,
@@ -579,14 +709,25 @@ def request_product(
     attempt
 ):
 
-    pacer.wait()
+    # Reserve aggregate request slot.
+    rate_limiter.wait()
+
 
     session = get_session()
+
 
     url = (
         f"{endpoint}/"
         f"{product_id}"
     )
+
+
+    request_start = (
+        record_request_start()
+    )
+
+
+    response_received_time = None
 
 
     try:
@@ -597,10 +738,19 @@ def request_product(
         )
 
 
-        # ----------------------------------------------------
-        # 404
-        # ----------------------------------------------------
+        response_received_time = (
+            time.perf_counter()
+        )
 
+
+        record_request_latency(
+            response_received_time
+            - request_start
+        )
+
+
+        
+        # 404
         if response.status_code == 404:
 
             return {
@@ -625,16 +775,15 @@ def request_product(
             }
 
 
-        # ----------------------------------------------------
-        # HTTP ERRORS
-        # ----------------------------------------------------
-
+       
+        # HTTP ERROR
         if response.status_code != 200:
 
             error_type = (
                 f"http_"
                 f"{response.status_code}"
             )
+
 
             return {
 
@@ -664,10 +813,8 @@ def request_product(
         text = response.text
 
 
-        # ----------------------------------------------------
-        # EMPTY RESPONSE
-        # ----------------------------------------------------
-
+       
+        # EMPTY
         if not text.strip():
 
             return {
@@ -692,10 +839,8 @@ def request_product(
             }
 
 
-        # ----------------------------------------------------
+        
         # HTML CHALLENGE
-        # ----------------------------------------------------
-
         content_type = (
             response.headers
             .get(
@@ -705,20 +850,27 @@ def request_product(
             .lower()
         )
 
+
         stripped_text = (
-            text.lstrip()
+            text
+            .lstrip()
             .lower()
         )
 
 
         if (
+
             "text/html"
             in content_type
+
             or
+
             stripped_text.startswith(
                 "<!doctype html"
             )
+
             or
+
             stripped_text.startswith(
                 "<html"
             )
@@ -746,10 +898,8 @@ def request_product(
             }
 
 
-        # ----------------------------------------------------
+        
         # JSON
-        # ----------------------------------------------------
-
         try:
 
             data = response.json()
@@ -778,6 +928,38 @@ def request_product(
             }
 
 
+        if not isinstance(
+            data,
+            dict
+        ):
+
+            return {
+
+                "product_id":
+                    product_id,
+
+                "status":
+                    "temporary_error",
+
+                "reason":
+                    (
+                        "Unexpected JSON type: "
+                        f"{type(data).__name__}"
+                    ),
+
+                "error_type":
+                    "invalid_json_structure",
+
+                "attempts":
+                    attempt,
+
+                "endpoint":
+                    endpoint
+            }
+
+
+        
+        # VERIFY PRODUCT ID
         returned_id = data.get(
             "id"
         )
@@ -808,8 +990,13 @@ def request_product(
 
 
         if (
-            str(returned_id)
-            != str(product_id)
+            str(
+                returned_id
+            )
+            !=
+            str(
+                product_id
+            )
         ):
 
             return {
@@ -822,7 +1009,7 @@ def request_product(
 
                 "reason":
                     (
-                        f"ID mismatch: "
+                        "ID mismatch: "
                         f"{returned_id}"
                     ),
 
@@ -837,20 +1024,42 @@ def request_product(
             }
 
 
-        # ----------------------------------------------------
+        
         # IMAGES
-        # ----------------------------------------------------
-
         images_url = []
 
-        for image in data.get(
-            "images",
-            []
+
+        # Handle null images
+        images = (
+            data.get(
+                "images"
+            )
+            or []
+        )
+
+
+        if not isinstance(
+            images,
+            list
         ):
+
+            images = []
+
+
+        for image in images:
+
+            if not isinstance(
+                image,
+                dict
+            ):
+
+                continue
+
 
             image_url = image.get(
                 "base_url"
             )
+
 
             if image_url:
 
@@ -859,10 +1068,8 @@ def request_product(
                 )
 
 
-        # ----------------------------------------------------
+        
         # PRODUCT
-        # ----------------------------------------------------
-
         product = {
 
             "id":
@@ -920,7 +1127,15 @@ def request_product(
         }
 
 
+    
+    # TIMEOUT
     except requests.exceptions.Timeout:
+
+        record_request_latency(
+            time.perf_counter()
+            - request_start
+        )
+
 
         return {
 
@@ -944,7 +1159,17 @@ def request_product(
         }
 
 
+    ##########
+    # CONNECTION
+    ##########
+    
     except requests.exceptions.ConnectionError as error:
+
+        record_request_latency(
+            time.perf_counter()
+            - request_start
+        )
+
 
         return {
 
@@ -956,7 +1181,7 @@ def request_product(
 
             "reason":
                 (
-                    f"ConnectionError: "
+                    "ConnectionError: "
                     f"{error}"
                 ),
 
@@ -971,7 +1196,15 @@ def request_product(
         }
 
 
+    
+    # REQUEST ERROR
     except requests.exceptions.RequestException as error:
+
+        record_request_latency(
+            time.perf_counter()
+            - request_start
+        )
+
 
         return {
 
@@ -998,9 +1231,53 @@ def request_product(
         }
 
 
-# ============================================================
-# FETCH WITH FALLBACK
-# ============================================================
+    
+    # PARSER / OTHER ERROR
+    except Exception as error:
+
+        return {
+
+            "product_id":
+                product_id,
+
+            "status":
+                "temporary_error",
+
+            "reason":
+                (
+                    "Unexpected parser error: "
+                    f"{type(error).__name__}: "
+                    f"{error}"
+                ),
+
+            "error_type":
+                "parser_error",
+
+            "attempts":
+                attempt,
+
+            "endpoint":
+                endpoint
+        }
+
+
+    finally:
+
+        if (
+            response_received_time
+            is not None
+        ):
+
+            record_processing_time(
+
+                time.perf_counter()
+                - response_received_time
+            )
+
+
+##########
+# FETCH PRODUCT + FALLBACK
+##########
 
 def fetch_product(
     product_id,
@@ -1019,13 +1296,12 @@ def fetch_product(
     )
 
 
-    # --------------------------------------------------------
-    # SUCCESS / 404
-    # --------------------------------------------------------
-
-    if first_result[
-        "status"
-    ] != "temporary_error":
+    if (
+        first_result[
+            "status"
+        ]
+        != "temporary_error"
+    ):
 
         return first_result
 
@@ -1035,20 +1311,14 @@ def fetch_product(
     )
 
 
-    # --------------------------------------------------------
-    # CHALLENGE:
-    # DO NOT IMMEDIATELY SWITCH ENDPOINT
-    # --------------------------------------------------------
-
+    # Challenge is deferred.
     if error_type == "challenge":
 
         return first_result
 
 
-    # --------------------------------------------------------
-    # FALLBACK ONLY FOR ENDPOINT-SPECIFIC ERRORS
-    # --------------------------------------------------------
-
+    # Only endpoint/network failures
+    # get immediate fallback.
     if error_type not in FALLBACK_ON:
 
         return first_result
@@ -1068,6 +1338,9 @@ def fetch_product(
         return first_result
 
 
+    record_fallback()
+
+
     fallback_result = request_product(
         product_id,
         fallback_endpoint,
@@ -1075,30 +1348,66 @@ def fetch_product(
     )
 
 
-    # Mark fallback information
-    fallback_result[
-        "reason"
-    ] = (
-        fallback_result.get(
+    if (
+        fallback_result[
+            "status"
+        ]
+        == "success"
+    ):
+
+        fallback_result[
             "reason"
-        )
-        or
-        "Recovered by fallback"
-    )
+        ] = None
 
 
     return fallback_result
 
 
-# ============================================================
-# RUN CHUNK
-# ============================================================
+##########
+# RUN ONE CONTROL CHUNK
+##########
 
 def run_chunk(
     conn,
+    executor,
     product_ids,
     attempt
 ):
+
+    chunk_start_time = (
+        time.perf_counter()
+    )
+
+
+    # Snapshot metrics.
+    with metrics_lock:
+
+        start_http_requests = (
+            total_http_requests
+        )
+
+        start_fallbacks = (
+            total_fallbacks
+        )
+
+        start_latency = (
+            total_request_latency
+        )
+
+        start_processing_time = (
+            total_processing_time
+        )
+
+        start_processing_count = (
+            total_processing_count
+        )
+
+        start_request_index = (
+            len(
+                request_start_times
+            )
+        )
+
 
     stats = {
 
@@ -1112,120 +1421,347 @@ def run_chunk(
     }
 
 
-    with ThreadPoolExecutor(
-        max_workers=MAX_THREADS
-    ) as executor:
+    # IMPORTANT:
+    #
+    # executor is persistent.
+    # We do NOT create a new ThreadPoolExecutor per chunk.
+    futures = {
 
-
-        futures = {
-
-            executor.submit(
-                fetch_product,
-                product_id,
-                attempt
-            ):
-            product_id
-
-            for product_id
-            in product_ids
-        }
-
-
-        for future in as_completed(
-            futures
+        executor.submit(
+            fetch_product,
+            product_id,
+            attempt
         ):
+        product_id
 
-            product_id = futures[
-                future
-            ]
-
-
-            try:
-
-                result = (
-                    future.result()
-                )
-
-            except Exception as error:
-
-                result = {
-
-                    "product_id":
-                        product_id,
-
-                    "status":
-                        "temporary_error",
-
-                    "reason":
-                        (
-                            "Unexpected worker error: "
-                            f"{type(error).__name__}: "
-                            f"{error}"
-                        ),
-
-                    "error_type":
-                        "worker_error",
-
-                    "attempts":
-                        attempt,
-
-                    "endpoint":
-                        None
-                }
+        for product_id
+        in product_ids
+    }
 
 
-            save_result(
-                conn,
-                result
+    for future in as_completed(
+        futures
+    ):
+
+        product_id = futures[
+            future
+        ]
+
+
+        try:
+
+            result = (
+                future.result()
             )
 
 
-            status = result[
-                "status"
-            ]
+        except Exception as error:
+
+            result = {
+
+                "product_id":
+                    product_id,
+
+                "status":
+                    "temporary_error",
+
+                "reason":
+                    (
+                        "Unexpected worker error: "
+                        f"{type(error).__name__}: "
+                        f"{error}"
+                    ),
+
+                "error_type":
+                    "worker_error",
+
+                "attempts":
+                    attempt,
+
+                "endpoint":
+                    None
+            }
 
 
-            if status == "success":
+        save_result(
+            conn,
+            result
+        )
+
+
+        status = result[
+            "status"
+        ]
+
+
+        if status == "success":
+
+            stats[
+                "success"
+            ] += 1
+
+
+        elif status == "permanent_error":
+
+            stats[
+                "permanent"
+            ] += 1
+
+
+        else:
+
+            stats[
+                "temporary"
+            ] += 1
+
+
+            if (
+                result.get(
+                    "error_type"
+                )
+                == "challenge"
+            ):
 
                 stats[
-                    "success"
+                    "challenge"
                 ] += 1
 
 
-            elif status == "permanent_error":
-
-                stats[
-                    "permanent"
-                ] += 1
-
-
-            else:
-
-                stats[
-                    "temporary"
-                ] += 1
-
-
-                if (
-                    result.get(
-                        "error_type"
-                    )
-                    == "challenge"
-                ):
-
-                    stats[
-                        "challenge"
-                    ] += 1
-
-
+    # One commit for all 100 result rows.
     conn.commit()
+
+
+    chunk_runtime = (
+        time.perf_counter()
+        - chunk_start_time
+    )
+
+
+    # METRICS
+    with metrics_lock:
+
+        chunk_http_requests = (
+            total_http_requests
+            - start_http_requests
+        )
+
+        chunk_fallbacks = (
+            total_fallbacks
+            - start_fallbacks
+        )
+
+        chunk_total_latency = (
+            total_request_latency
+            - start_latency
+        )
+
+        chunk_processing_time = (
+            total_processing_time
+            - start_processing_time
+        )
+
+        chunk_processing_count = (
+            total_processing_count
+            - start_processing_count
+        )
+
+        chunk_start_times = (
+            request_start_times[
+                start_request_index:
+            ].copy()
+        )
+
+
+    if chunk_http_requests > 0:
+
+        avg_latency = (
+            chunk_total_latency
+            / chunk_http_requests
+        )
+
+    else:
+
+        avg_latency = 0.0
+
+
+    if chunk_processing_count > 0:
+
+        avg_processing_time = (
+            chunk_processing_time
+            / chunk_processing_count
+        )
+
+    else:
+
+        avg_processing_time = 0.0
+
+
+    start_gaps = []
+
+
+    for index in range(
+        1,
+        len(
+            chunk_start_times
+        )
+    ):
+
+        start_gaps.append(
+
+            chunk_start_times[
+                index
+            ]
+            -
+            chunk_start_times[
+                index - 1
+            ]
+        )
+
+
+    if start_gaps:
+
+        avg_start_gap = (
+            sum(
+                start_gaps
+            )
+            / len(
+                start_gaps
+            )
+        )
+
+        min_start_gap = min(
+            start_gaps
+        )
+
+        max_start_gap = max(
+            start_gaps
+        )
+
+    else:
+
+        avg_start_gap = 0.0
+        min_start_gap = 0.0
+        max_start_gap = 0.0
+
+
+    if chunk_runtime > 0:
+
+        chunk_rate = (
+            len(
+                product_ids
+            )
+            / chunk_runtime
+            * 60
+        )
+
+    else:
+
+        chunk_rate = 0.0
+
+
+    stats[
+        "http_requests"
+    ] = chunk_http_requests
+
+    stats[
+        "fallbacks"
+    ] = chunk_fallbacks
+
+    stats[
+        "avg_latency"
+    ] = avg_latency
+
+    stats[
+        "avg_processing_time"
+    ] = avg_processing_time
+
+    stats[
+        "avg_start_gap"
+    ] = avg_start_gap
+
+    stats[
+        "min_start_gap"
+    ] = min_start_gap
+
+    stats[
+        "max_start_gap"
+    ] = max_start_gap
+
+    stats[
+        "chunk_runtime"
+    ] = chunk_runtime
+
+    stats[
+        "chunk_rate"
+    ] = chunk_rate
+
 
     return stats
 
 
-# ============================================================
+##########
+# PRINT CHUNK STATS
+##########
+
+def print_chunk_stats(
+    stats
+):
+
+    print(
+        f"success="
+        f"{stats['success']}"
+        f" | permanent="
+        f"{stats['permanent']}"
+        f" | temporary="
+        f"{stats['temporary']}"
+        f" | challenge="
+        f"{stats['challenge']}"
+    )
+
+
+    print(
+        f"http_requests="
+        f"{stats['http_requests']}"
+        f" | fallbacks="
+        f"{stats['fallbacks']}"
+    )
+
+
+    print(
+        f"avg_latency="
+        f"{stats['avg_latency']:.3f}s"
+        f" | avg_processing="
+        f"{stats['avg_processing_time']:.3f}s"
+    )
+
+
+    print(
+        f"configured_interval="
+        f"{rate_limiter.get_interval():.2f}s"
+    )
+
+
+    print(
+        f"actual_start_gap="
+        f"{stats['avg_start_gap']:.3f}s avg"
+        f" | "
+        f"{stats['min_start_gap']:.3f}s min"
+        f" | "
+        f"{stats['max_start_gap']:.3f}s max"
+    )
+
+
+    print(
+        f"chunk_runtime="
+        f"{format_time(stats['chunk_runtime'])}"
+        f" | chunk_rate="
+        f"{stats['chunk_rate']:.2f} IDs/min"
+    )
+
+
+##########
 # ADAPTIVE PACING
-# ============================================================
+##########
 
 def adjust_pacing(
     conn,
@@ -1234,6 +1770,7 @@ def adjust_pacing(
 ):
 
     if total == 0:
+
         return
 
 
@@ -1246,7 +1783,7 @@ def adjust_pacing(
 
 
     current_interval = (
-        pacer.get_interval()
+        rate_limiter.get_interval()
     )
 
 
@@ -1259,10 +1796,8 @@ def adjust_pacing(
     )
 
 
-    # --------------------------------------------------------
-    # HIGH CHALLENGE
-    # --------------------------------------------------------
-
+    
+    # HIGH
     if (
         challenge_rate
         >= HIGH_CHALLENGE_RATE
@@ -1274,9 +1809,11 @@ def adjust_pacing(
             + SLOW_DOWN_HIGH
         )
 
-        pacer.set_interval(
+
+        rate_limiter.set_interval(
             new_interval
         )
+
 
         clean_streak = 0
 
@@ -1300,14 +1837,18 @@ def adjust_pacing(
         set_metadata(
             conn,
             "current_interval",
-            new_interval
+            new_interval,
+            commit=False
         )
 
         set_metadata(
             conn,
             "clean_streak",
-            clean_streak
+            clean_streak,
+            commit=False
         )
+
+        conn.commit()
 
 
         time.sleep(
@@ -1317,10 +1858,8 @@ def adjust_pacing(
         return
 
 
-    # --------------------------------------------------------
+    
     # MEDIUM
-    # --------------------------------------------------------
-
     if (
         challenge_rate
         >= MEDIUM_CHALLENGE_RATE
@@ -1332,9 +1871,11 @@ def adjust_pacing(
             + SLOW_DOWN_MEDIUM
         )
 
-        pacer.set_interval(
+
+        rate_limiter.set_interval(
             new_interval
         )
+
 
         clean_streak = 0
 
@@ -1358,14 +1899,18 @@ def adjust_pacing(
         set_metadata(
             conn,
             "current_interval",
-            new_interval
+            new_interval,
+            commit=False
         )
 
         set_metadata(
             conn,
             "clean_streak",
-            clean_streak
+            clean_streak,
+            commit=False
         )
+
+        conn.commit()
 
 
         time.sleep(
@@ -1375,10 +1920,8 @@ def adjust_pacing(
         return
 
 
-    # --------------------------------------------------------
-    # SMALL CHALLENGE
-    # --------------------------------------------------------
-
+    
+    # LOW
     if (
         challenge_rate
         >= LOW_CHALLENGE_RATE
@@ -1390,9 +1933,11 @@ def adjust_pacing(
             + SLOW_DOWN_SMALL
         )
 
-        pacer.set_interval(
+
+        rate_limiter.set_interval(
             new_interval
         )
+
 
         clean_streak = 0
 
@@ -1407,26 +1952,38 @@ def adjust_pacing(
             f"{new_interval:.2f}s"
         )
 
+        print(
+            f"Cooldown "
+            f"{LOW_COOLDOWN}s"
+        )
+
 
         set_metadata(
             conn,
             "current_interval",
-            new_interval
+            new_interval,
+            commit=False
         )
 
         set_metadata(
             conn,
             "clean_streak",
-            clean_streak
+            clean_streak,
+            commit=False
+        )
+
+        conn.commit()
+
+
+        time.sleep(
+            LOW_COOLDOWN
         )
 
         return
 
 
-    # --------------------------------------------------------
+    
     # CLEAN
-    # --------------------------------------------------------
-
     if (
         stats[
             "challenge"
@@ -1454,9 +2011,10 @@ def adjust_pacing(
                 < current_interval
             ):
 
-                pacer.set_interval(
+                rate_limiter.set_interval(
                     new_interval
                 )
+
 
                 print(
                     f"{clean_streak} clean chunks"
@@ -1476,32 +2034,37 @@ def adjust_pacing(
     set_metadata(
         conn,
         "current_interval",
-        pacer.get_interval()
+        rate_limiter.get_interval(),
+        commit=False
     )
+
 
     set_metadata(
         conn,
         "clean_streak",
-        clean_streak
+        clean_streak,
+        commit=False
     )
 
 
-# ============================================================
-# COUNTS
-# ============================================================
+    conn.commit()
 
-def get_counts(conn):
+
+##########
+# COUNTS
+##########
+
+def get_counts(
+    conn
+):
 
     counts = {
 
-        "success":
-            0,
+        "success": 0,
 
-        "permanent_error":
-            0,
+        "permanent_error": 0,
 
-        "temporary_error":
-            0
+        "temporary_error": 0
     }
 
 
@@ -1518,7 +2081,10 @@ def get_counts(conn):
     ).fetchall()
 
 
-    for status, count in rows:
+    for (
+        status,
+        count
+    ) in rows:
 
         counts[
             status
@@ -1528,9 +2094,33 @@ def get_counts(conn):
     return counts
 
 
-# ============================================================
+def get_classified_count(
+    conn
+):
+
+    counts = get_counts(
+        conn
+    )
+
+
+    return (
+        counts[
+            "success"
+        ]
+        +
+        counts[
+            "permanent_error"
+        ]
+        +
+        counts[
+            "temporary_error"
+        ]
+    )
+
+
+##########
 # PENDING IDS
-# ============================================================
+##########
 
 def get_pending_ids(
     conn,
@@ -1541,7 +2131,8 @@ def get_pending_ids(
 
         row[0]
 
-        for row in conn.execute(
+        for row
+        in conn.execute(
             """
             SELECT product_id
             FROM results
@@ -1562,14 +2153,16 @@ def get_pending_ids(
     ]
 
 
-# ============================================================
+##########
 # PROGRESS
-# ============================================================
+##########
 
 def print_progress(
     conn,
     total_ids,
-    start_time,
+    session_start_time,
+    previous_runtime,
+    session_start_classified,
     phase
 ):
 
@@ -1579,38 +2172,50 @@ def print_progress(
 
 
     classified = (
-
         counts[
             "success"
         ]
-
-        + counts[
+        +
+        counts[
             "permanent_error"
         ]
-
-        + counts[
+        +
+        counts[
             "temporary_error"
         ]
     )
 
 
-    elapsed = (
+    session_elapsed = (
         time.time()
-        - start_time
+        - session_start_time
     )
 
 
-    if elapsed > 0:
+    total_runtime = (
+        previous_runtime
+        + session_elapsed
+    )
 
-        rate = (
-            classified
-            / elapsed
+
+    session_processed = max(
+        0,
+        classified
+        - session_start_classified
+    )
+
+
+    if session_elapsed > 0:
+
+        session_rate = (
+            session_processed
+            / session_elapsed
             * 60
         )
 
     else:
 
-        rate = 0
+        session_rate = 0.0
 
 
     remaining = max(
@@ -1620,11 +2225,11 @@ def print_progress(
     )
 
 
-    if rate > 0:
+    if session_rate > 0:
 
         eta = (
             remaining
-            / rate
+            / session_rate
             * 60
         )
 
@@ -1634,6 +2239,7 @@ def print_progress(
 
 
     print()
+
     print(
         "========================================"
     )
@@ -1665,17 +2271,22 @@ def print_progress(
 
     print(
         f"Global interval: "
-        f"{pacer.get_interval():.2f}s"
+        f"{rate_limiter.get_interval():.2f}s"
     )
 
     print(
-        f"Runtime: "
-        f"{format_time(elapsed)}"
+        f"Session runtime: "
+        f"{format_time(session_elapsed)}"
     )
 
     print(
-        f"Rate: "
-        f"{rate:.2f} IDs/min"
+        f"Total runtime: "
+        f"{format_time(total_runtime)}"
+    )
+
+    print(
+        f"Session rate: "
+        f"{session_rate:.2f} IDs/min"
     )
 
     print(
@@ -1688,14 +2299,17 @@ def print_progress(
     )
 
 
-# ============================================================
+##########
 # FIRST PASS
-# ============================================================
+##########
 
 def first_pass(
     conn,
+    executor,
     product_ids,
-    start_time
+    session_start_time,
+    previous_runtime,
+    session_start_classified
 ):
 
     pending_ids = get_pending_ids(
@@ -1710,12 +2324,17 @@ def first_pass(
     )
 
 
-    total_chunks = (
+    if not pending_ids:
 
-        len(pending_ids)
+        return
+
+
+    total_chunks = (
+        len(
+            pending_ids
+        )
         + CHUNK_SIZE
         - 1
-
     ) // CHUNK_SIZE
 
 
@@ -1733,69 +2352,75 @@ def first_pass(
             + CHUNK_SIZE
         )
 
-
-        chunk = pending_ids[
-            start:end
-        ]
+        chunk = (
+            pending_ids[
+                start:end
+            ]
+        )
 
 
         stats = run_chunk(
             conn,
+            executor,
             chunk,
             attempt=1
         )
 
 
         print()
+
         print(
             f"Chunk "
             f"{chunk_number + 1}/"
             f"{total_chunks}"
         )
 
-        print(
-            f"success="
-            f"{stats['success']}"
-            f" | permanent="
-            f"{stats['permanent']}"
-            f" | temporary="
-            f"{stats['temporary']}"
-            f" | challenge="
-            f"{stats['challenge']}"
+
+        print_chunk_stats(
+            stats
         )
 
 
         adjust_pacing(
             conn,
             stats,
-            len(chunk)
+            len(
+                chunk
+            )
         )
 
 
         print_progress(
             conn,
-            len(product_ids),
-            start_time,
+            len(
+                product_ids
+            ),
+            session_start_time,
+            previous_runtime,
+            session_start_classified,
             "FIRST PASS"
         )
 
 
-    set_metadata(
-        conn,
-        "first_pass_complete",
-        "1"
-    )
+        checkpoint_runtime(
+            conn,
+            session_start_time,
+            previous_runtime
+        )
 
 
-# ============================================================
+##########
 # RETRY
-# ============================================================
+##########
 
 def retry_round(
     conn,
+    executor,
     round_number,
     total_ids,
-    start_time
+    session_start_time,
+    previous_runtime,
+    session_start_classified
 ):
 
     rows = conn.execute(
@@ -1805,8 +2430,7 @@ def retry_round(
         FROM results
 
         WHERE
-            status =
-                'temporary_error'
+            status = 'temporary_error'
 
         AND
             attempts = ?
@@ -1823,7 +2447,8 @@ def retry_round(
 
         row[0]
 
-        for row in rows
+        for row
+        in rows
     ]
 
 
@@ -1839,6 +2464,7 @@ def retry_round(
 
 
     print()
+
     print(
         f"Retry round "
         f"{round_number}"
@@ -1859,21 +2485,21 @@ def retry_round(
 
 
     if (
-        pacer.get_interval()
+        rate_limiter.get_interval()
         < RETRY_MIN_INTERVAL
     ):
 
-        pacer.set_interval(
+        rate_limiter.set_interval(
             RETRY_MIN_INTERVAL
         )
 
 
     total_chunks = (
-
-        len(retry_ids)
+        len(
+            retry_ids
+        )
         + CHUNK_SIZE
         - 1
-
     ) // CHUNK_SIZE
 
 
@@ -1891,14 +2517,16 @@ def retry_round(
             + CHUNK_SIZE
         )
 
-
-        chunk = retry_ids[
-            start:end
-        ]
+        chunk = (
+            retry_ids[
+                start:end
+            ]
+        )
 
 
         stats = run_chunk(
             conn,
+            executor,
             chunk,
             attempt=(
                 round_number
@@ -1908,6 +2536,7 @@ def retry_round(
 
 
         print()
+
         print(
             f"Retry "
             f"{round_number}"
@@ -1916,36 +2545,41 @@ def retry_round(
             f"{total_chunks}"
         )
 
-        print(
-            f"success="
-            f"{stats['success']}"
-            f" | permanent="
-            f"{stats['permanent']}"
-            f" | temporary="
-            f"{stats['temporary']}"
-            f" | challenge="
-            f"{stats['challenge']}"
+
+        print_chunk_stats(
+            stats
         )
 
 
         adjust_pacing(
             conn,
             stats,
-            len(chunk)
+            len(
+                chunk
+            )
         )
 
 
         print_progress(
             conn,
             total_ids,
-            start_time,
+            session_start_time,
+            previous_runtime,
+            session_start_classified,
             f"RETRY {round_number}"
         )
 
 
-# ============================================================
-# ATOMIC JSON
-# ============================================================
+        checkpoint_runtime(
+            conn,
+            session_start_time,
+            previous_runtime
+        )
+
+
+##########
+# ATOMIC JSON SAVE
+##########
 
 def save_json_atomic(
     data,
@@ -1978,21 +2612,26 @@ def save_json_atomic(
     )
 
 
-# ============================================================
+##########
 # EXPORT PRODUCTS
-# ============================================================
+##########
 
-def export_products(conn):
+def export_products(
+    conn
+):
 
     for filename in os.listdir(
         OUTPUT_DIR
     ):
 
         if (
+
             filename.startswith(
                 "products_"
             )
+
             and
+
             filename.endswith(
                 ".json"
             )
@@ -2012,8 +2651,7 @@ def export_products(conn):
 
         FROM results
 
-        WHERE status =
-            'success'
+        WHERE status = 'success'
 
         ORDER BY rowid
         """
@@ -2029,22 +2667,32 @@ def export_products(conn):
 
     for row in rows:
 
+        if row[0] is None:
+
+            continue
+
+
         batch.append(
             json.loads(
                 row[0]
             )
         )
 
+
         total += 1
 
 
         if (
-            len(batch)
+            len(
+                batch
+            )
             == PRODUCTS_PER_FILE
         ):
 
             filename = os.path.join(
+
                 OUTPUT_DIR,
+
                 f"products_"
                 f"{batch_number:03d}"
                 f".json"
@@ -2071,7 +2719,9 @@ def export_products(conn):
     if batch:
 
         filename = os.path.join(
+
             OUTPUT_DIR,
+
             f"products_"
             f"{batch_number:03d}"
             f".json"
@@ -2093,17 +2743,20 @@ def export_products(conn):
     return total
 
 
-# ============================================================
+##########
 # EXPORT ERRORS
-# ============================================================
+##########
 
-def export_errors(conn):
+def export_errors(
+    conn
+):
 
     permanent_rows = conn.execute(
         """
         SELECT
             product_id,
             reason,
+            error_type,
             attempts,
             endpoint
 
@@ -2122,6 +2775,7 @@ def export_errors(conn):
         SELECT
             product_id,
             reason,
+            error_type,
             attempts,
             endpoint
 
@@ -2138,26 +2792,50 @@ def export_errors(conn):
     permanent = [
 
         {
-            "product_id": row[0],
-            "reason": row[1],
-            "attempts": row[2],
-            "endpoint": row[3],
+
+            "product_id":
+                row[0],
+
+            "reason":
+                row[1],
+
+            "error_type":
+                row[2],
+
+            "attempts":
+                row[3],
+
+            "endpoint":
+                row[4]
         }
 
-        for row in permanent_rows
+        for row
+        in permanent_rows
     ]
 
 
     temporary = [
 
         {
-            "product_id": row[0],
-            "reason": row[1],
-            "attempts": row[2],
-            "endpoint": row[3],
+
+            "product_id":
+                row[0],
+
+            "reason":
+                row[1],
+
+            "error_type":
+                row[2],
+
+            "attempts":
+                row[3],
+
+            "endpoint":
+                row[4]
         }
 
-        for row in temporary_rows
+        for row
+        in temporary_rows
     ]
 
 
@@ -2174,18 +2852,22 @@ def export_errors(conn):
 
 
     return (
-        len(permanent),
-        len(temporary)
+        len(
+            permanent
+        ),
+        len(
+            temporary
+        )
     )
 
 
-# ============================================================
+##########
 # MAIN
-# ============================================================
+##########
 
 def main():
 
-    start_time = (
+    session_start_time = (
         time.time()
     )
 
@@ -2197,9 +2879,11 @@ def main():
 
     if TEST_LIMIT is not None:
 
-        product_ids = product_ids[
-            :TEST_LIMIT
-        ]
+        product_ids = (
+            product_ids[
+                :TEST_LIMIT
+            ]
+        )
 
 
     total_ids = len(
@@ -2240,6 +2924,11 @@ def main():
     )
 
     print(
+        f"Minimum global interval: "
+        f"{MIN_INTERVAL}s"
+    )
+
+    print(
         f"Database: "
         f"{DATABASE_FILE}"
     )
@@ -2252,17 +2941,111 @@ def main():
     conn = connect_database()
 
 
-    # Restore interval from previous run
-    stored_interval = get_metadata(
+    # RUNTIME STATE
+    previous_runtime = float(
+        get_metadata(
+            conn,
+            "total_runtime_seconds",
+            "0"
+        )
+    )
+
+
+    first_started_at = (
+        get_metadata(
+            conn,
+            "first_started_at",
+            None
+        )
+    )
+
+
+    if first_started_at is None:
+
+        first_started_at = (
+            datetime.now().isoformat(
+                timespec="seconds"
+            )
+        )
+
+
+        set_metadata(
+            conn,
+            "first_started_at",
+            first_started_at,
+            commit=False
+        )
+
+
+    session_count = int(
+        get_metadata(
+            conn,
+            "session_count",
+            "0"
+        )
+    )
+
+
+    session_count += 1
+
+
+    set_metadata(
         conn,
-        "current_interval",
-        None
+        "session_count",
+        session_count,
+        commit=False
+    )
+
+
+    set_metadata(
+        conn,
+        "last_started_at",
+        datetime.now().isoformat(
+            timespec="seconds"
+        ),
+        commit=False
+    )
+
+
+    conn.commit()
+
+
+    print(
+        f"Previous runtime: "
+        f"{format_time(previous_runtime)}"
+    )
+
+    print(
+        f"Session number: "
+        f"{session_count}"
+    )
+
+    print(
+        f"First started at: "
+        f"{first_started_at}"
+    )
+
+
+    session_start_classified = (
+        get_classified_count(
+            conn
+        )
+    )
+
+
+    # RESTORE ADAPTIVE INTERVAL
+    stored_interval = (
+        get_metadata(
+            conn,
+            "current_interval",
+            None
+        )
     )
 
 
     if stored_interval is not None:
 
-        pacer.set_interval(
+        rate_limiter.set_interval(
             float(
                 stored_interval
             )
@@ -2271,53 +3054,50 @@ def main():
 
         print(
             f"Restored interval: "
-            f"{pacer.get_interval():.2f}s"
+            f"{rate_limiter.get_interval():.2f}s"
         )
 
 
     try:
 
-        first_pass_complete = (
-            get_metadata(
-                conn,
-                "first_pass_complete",
-                "0"
-            )
-        )
+        # ONE PERSISTENT EXECUTOR
+        with ThreadPoolExecutor(
+            max_workers=MAX_THREADS
+        ) as executor:
 
 
-        if (
-            first_pass_complete
-            != "1"
-        ):
-
+            # FIRST PASS
             first_pass(
                 conn,
+                executor,
                 product_ids,
-                start_time
+                session_start_time,
+                previous_runtime,
+                session_start_classified
             )
 
-        else:
+       
+            # RETRY
+            for round_number in range(
+                1,
+                RETRY_ROUNDS + 1
+            ):
 
-            print(
-                "First pass already complete."
-            )
-
-
-        for round_number in range(
-            1,
-            RETRY_ROUNDS + 1
-        ):
-
-            retry_round(
-                conn,
-                round_number,
-                total_ids,
-                start_time
-            )
+                retry_round(
+                    conn,
+                    executor,
+                    round_number,
+                    total_ids,
+                    session_start_time,
+                    previous_runtime,
+                    session_start_classified
+                )
 
 
+        
+        # EXPORT
         print()
+
         print(
             "Exporting JSON..."
         )
@@ -2346,13 +3126,23 @@ def main():
         )
 
 
-        elapsed = (
+        session_runtime = (
             time.time()
-            - start_time
+            - session_start_time
         )
 
 
+        total_runtime = (
+            get_total_runtime(
+                session_start_time,
+                previous_runtime
+            )
+        )
+
+        
+        # FINAL
         print()
+
         print(
             "========================================"
         )
@@ -2393,12 +3183,22 @@ def main():
 
         print(
             f"Final global interval: "
-            f"{pacer.get_interval():.2f}s"
+            f"{rate_limiter.get_interval():.2f}s"
         )
 
         print(
             f"Session runtime: "
-            f"{format_time(elapsed)}"
+            f"{format_time(session_runtime)}"
+        )
+
+        print(
+            f"Total runtime: "
+            f"{format_time(total_runtime)}"
+        )
+
+        print(
+            f"Sessions: "
+            f"{session_count}"
         )
 
 
@@ -2426,6 +3226,7 @@ def main():
     except KeyboardInterrupt:
 
         print()
+
         print(
             "Crawler stopped."
         )
@@ -2435,17 +3236,27 @@ def main():
         )
 
         print(
-            "Run the same script again "
+            "Run the script again "
             "to resume."
         )
 
 
     finally:
 
+        checkpoint_runtime(
+            conn,
+            session_start_time,
+            previous_runtime
+        )
+
         conn.commit()
 
         conn.close()
 
+
+##########
+# ENTRY POINT
+##########
 
 if __name__ == "__main__":
 
